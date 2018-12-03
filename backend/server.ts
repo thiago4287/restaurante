@@ -17,10 +17,9 @@ server.use(middlewares)
 // Add custom routes before JSON Server router
 server.use(jsonServer.bodyParser)
 
-
 server.post('/login', handleAuthentication);
 
-// Use default router
+// Use default routes
 server.use(router)
 
 const options = {
@@ -30,5 +29,5 @@ const options = {
 
 https.createServer(options,server)
 .listen(3001, () => {
-  console.log('JSON Server is running on https://localhost:3002')
+  console.log('JSON Server is running on https://localhost:3001')
 })
