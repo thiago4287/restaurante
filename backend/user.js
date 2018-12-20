@@ -1,15 +1,15 @@
 "use strict";
 exports.__esModule = true;
 var User = /** @class */ (function () {
-    function User(email, nome, passsword) {
+    function User(email, nome, password) {
         this.email = email;
         this.nome = nome;
-        this.passsword = passsword;
+        this.password = password;
     }
     User.prototype.matches = function (another) {
         return another !== undefined &&
             another.email === this.email &&
-            another.passsword === this.passsword;
+            another.password === this.password;
     };
     return User;
 }());

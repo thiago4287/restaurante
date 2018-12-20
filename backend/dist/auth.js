@@ -5,7 +5,7 @@ exports.handleAuthentication = function (req, resp) {
     var user = req.body;
     if (isValid(user)) {
         var dbUser = user_1.users[user.email];
-        resp.json({ name: dbUser.nome, email: dbUser.email });
+        resp.json({ nome: dbUser.nome, email: dbUser.email });
     }
     else {
         resp.status(403).json({ message: 'Dados inválidos3!' });
