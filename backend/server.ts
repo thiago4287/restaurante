@@ -1,10 +1,13 @@
 
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+
 import * as jsonServer from 'json-server'
 import { Express } from 'express'
 
 import * as fs from 'fs'
 import * as https from 'https'
 import { handleAuthentication } from './auth'
+import { handlerAuthorization } from './authz'
 
 
 const server: Express = jsonServer.create()
@@ -18,6 +21,7 @@ server.use(middlewares)
 server.use(jsonServer.bodyParser)
 
 server.post('/login', handleAuthentication);
+server.use('/orders', handlerAuthorization)
 
 // Use default routes
 server.use(router)
@@ -28,6 +32,6 @@ const options = {
 }
 
 https.createServer(options,server)
-.listen(3001, () => {
+.listen(3002, () => {
   console.log('JSON Server is running on https://localhost:3001')
 })
