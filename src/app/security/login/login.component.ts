@@ -28,7 +28,7 @@ user: User
   login(){
       this.loginService.login(this.loginForm.value.email, 
         this.loginForm.value.password)
-        .subscribe(user => this.notificationService.notify(`Bem-vindo ${user.nome}`), 
+        .subscribe(user => this.notificationService.notify(`Bem-vindo(a) ${user.nome}!`), 
         response => //HttpErrorResponse
         this.notificationService.notify(response.error.message))
   }
