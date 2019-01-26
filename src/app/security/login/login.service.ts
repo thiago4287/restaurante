@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { MEAT_API } from '../../app.api';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
@@ -11,7 +12,7 @@ export class LoginService {
 
     user: User
 
-    constructor(private http: HttpClient){}
+    constructor(private http: HttpClient, private router: Router){}
 
     isLoggedIn(): boolean{
         return this.user !== undefined
@@ -22,4 +23,14 @@ export class LoginService {
         {email: email, password: password})
         .do(user => this.user = user)
     }
+
+    handlerLogin(path?: string){
+        this.router.navigate(['/login', btoa(path)])
+    //O método 'btoa()' codifica a informação
+    }
 }
+
+/*
+    Como iremos precisar redirecionar o usuário para a página de login, precisaremos
+    importar o 'Router' e criar uma referência no construtor para utilizá-lo
+*/

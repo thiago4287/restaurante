@@ -1,3 +1,4 @@
+import { LoggedInGuard } from './../security/loggedin.guard';
 import { LoginService } from './../security/login/login.service';
 import { NgModule, ModuleWithProviders } from "@angular/core";
 import { InputComponent } from "./input/input.component";
@@ -23,7 +24,8 @@ export class SharedModule {
         return {
             ngModule: SharedModule,
             providers: [RestaurantService, ShoppingCartService, 
-                OrderService, NotificationService, LoginService]
+                OrderService, NotificationService, LoginService,
+            LoggedInGuard]
         }
     }
 }
