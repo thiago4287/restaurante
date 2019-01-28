@@ -1,17 +1,49 @@
+import { LoginService } from './security/login/login.service';
+import { NotificationService } from './shared/message/notification.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import 'rxjs/add/observable/throw';
-import { Observable } from '../../node_modules/rxjs/Observable';
+import { ErrorHandler, Injectable, Injector, NgZone } from '@angular/core';
 
-export class ErrorHandler {
-    static handlerError(error: HttpErrorResponse | any) {
-        let errorMessage: string;
-        if(error instanceof HttpErrorResponse){
-            const body = error.error
-            errorMessage = `Erro ${error.status} ao acessar a URL ${error.url} - ${error.statusText} || ''} ${body}`
-        }else{
-            errorMessage = error.toString()
-        }
-        console.log(errorMessage)
-        return Observable.throw(errorMessage)
+@Injectable()
+export class ApplicationErrorHandler extends ErrorHandler {
+
+    constructor(private ns: NotificationService,
+        private injector: Injector,
+        private zone: NgZone){
+        super()
     }
+
+    handleError(errorResponse: HttpErrorResponse | any) {
+        const message = errorResponse.error.message
+        
+
+         if(errorResponse instanceof HttpErrorResponse){
+            
+            this.zone.run(()=> {
+
+                switch(errorResponse.status){
+                    case 401:
+                        this.injector.get(LoginService).handlerLogin()
+                    break;
+    
+                    case 403:
+                        this.ns.notify(message || 'Não autorizado!')
+                    break;
+    
+                    case 404:
+                        this.ns.notify(message || 'Recurso não encontrado. Verifique o console para mais detalhes!')
+                    break;
+                }
+            })
+            
+        }
+       super.handleError(errorResponse)
+        }
+    
 }
+
+/**
+ *  O 'NgZone' executa o código dentro de uma zona, dessa forma o código é atuaoizado
+ * automaticamente pelo angular e assim ele consegue perceber es o código ainda está
+ * sendo executado ou já terminou
+ */

@@ -1,6 +1,5 @@
 import { Restaurant } from "./restaurant/restaurant.model";
 import { MEAT_API } from '../app.api';
-import { ErrorHandler } from '../app.error-handler';
 
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
@@ -31,7 +30,7 @@ export class RestaurantService{
         if(search){
             parametro = new HttpParams().append('q', search)
         }
-        return this.http.get<Restaurant[]>(`${MEAT_API}/restaurants`, {params: parametro})
+        return this.http.get<Restaurant[]>(`${MEAT_API}/restaurantss`, {params: parametro})
     }
 
     restaurantById(id: string): Observable<Restaurant>{
