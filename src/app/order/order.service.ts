@@ -1,4 +1,3 @@
-import { LoginService } from './../security/login/login.service';
 import { Injectable } from "@angular/core";
 import { ShoppingCartService } from "../restaurant-datail/shopping-cart/shopping-cart.service";
 import { CartItem } from "../restaurant-datail/shopping-cart/cart-item.model";
@@ -11,8 +10,7 @@ import { MEAT_API } from "../app.api";
 export class OrderService {
 
     constructor(private cartService: ShoppingCartService,
-         private http: HttpClient,
-         private loginService: LoginService){}
+         private http: HttpClient){}
 
     itemsValue(): number {
         return this.cartService.total()
@@ -40,13 +38,7 @@ export class OrderService {
     //FECHAMENTO DE COMPRA
 
     checkOrder(order: Order): Observable<string> {
-        let headers  = new HttpHeaders()
-        //Essa variável armazenará os dados do usuário logado vindo do backend(Autorization)
-        if(this.loginService.isLoggedIn()){
-            headers = headers.set('Authorization', `Bearer ${this.loginService.user.accessToken}`)
-            //Esse headers é passado logo abaixo na requisição já com o token
-        }
-        return this.http.post<Order>(`${MEAT_API}/orders`, order, {headers:headers})
+        return this.http.post<Order>(`${MEAT_API}/orders`, order)
         .map(order => order.id)
     }
 }

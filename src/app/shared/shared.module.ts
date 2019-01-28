@@ -1,3 +1,5 @@
+import { AuthInterceptor } from './../security/auth.interceptor';
+import { LeaveOrderGuard } from './../order/leave-order-guard';
 import { LoggedInGuard } from './../security/loggedin.guard';
 import { LoginService } from './../security/login/login.service';
 import { NgModule, ModuleWithProviders } from "@angular/core";
@@ -11,6 +13,7 @@ import { ShoppingCartService } from "../restaurant-datail/shopping-cart/shopping
 import { OrderService } from "../order/order.service";
 import { SnackbarComponent } from './message/snackbar/snackbar.component';
 import { NotificationService } from "./message/notification.service";
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 @NgModule({
     declarations: [InputComponent, RadioComponent, RatingComponent, SnackbarComponent],
@@ -25,7 +28,8 @@ export class SharedModule {
             ngModule: SharedModule,
             providers: [RestaurantService, ShoppingCartService, 
                 OrderService, NotificationService, LoginService,
-            LoggedInGuard]
+            LoggedInGuard, LeaveOrderGuard,
+            {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}]
         }
     }
 }

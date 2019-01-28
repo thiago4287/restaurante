@@ -13,6 +13,9 @@ import { FormBuilder, FormGroup, Validators, AbstractControl} from '@angular/for
 })
 export class OrderComponent implements OnInit {
   delivery: number = 8
+
+  orderId: string
+
   emailPattern = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
   numberPattern =/^[0-9]*$/
   orderForm: FormGroup
@@ -73,11 +76,17 @@ export class OrderComponent implements OnInit {
     this.orderService.remove(item)
   }
 
+  isOrderCompleted(): boolean {
+    return this.orderId !== undefined
+  }
   checkOrder(order: Order) {
     // Transformando os items do carrinho(CartItems) em OrderItem
     order.orderItems = this.cartItems().map(
       (item: CartItem)=> new OrderItem(item.quantity, item.menuItem.id))
       this.orderService.checkOrder(order)
+      .do((orderId: string) => {
+        this.orderId = orderId
+      })
       .subscribe((orderId: string) => {
         this.router.navigate(['/order-sumary'])
         this.orderService.clear()
