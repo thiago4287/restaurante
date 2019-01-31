@@ -6,7 +6,7 @@ import { ErrorHandler, Injectable, Injector, NgZone } from '@angular/core';
 
 @Injectable()
 export class ApplicationErrorHandler extends ErrorHandler {
-
+     
     constructor(private ns: NotificationService,
         private injector: Injector,
         private zone: NgZone){
@@ -14,8 +14,10 @@ export class ApplicationErrorHandler extends ErrorHandler {
     }
 
     handleError(errorResponse: HttpErrorResponse | any) {
-        const message = errorResponse.error.message
-        
+         //const message = errorResponse.error.message
+         const message = errorResponse.message;
+         
+         console.log('Mesagem: ', message)
 
          if(errorResponse instanceof HttpErrorResponse){
             

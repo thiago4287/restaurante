@@ -11,10 +11,12 @@ export class AuthInterceptor implements HttpInterceptor {
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const loginService = this.injector.get(LoginService)//Aqui pegamos a referência
+        
         if(loginService.isLoggedIn()){
+            
             const authRequest = request.clone(
                 {setHeaders: {'Authorization': `Bearer ${loginService.user.accessToken}`}})
-            return next.handle(authRequest)
+                return next.handle(authRequest)
         }else {
             return next.handle(request)
         }

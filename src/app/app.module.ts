@@ -3,7 +3,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, LOCALE_ID, ErrorHandler  } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { registerLocaleData } from '@angular/common'
+import LocalePt from '@angular/common/locales/pt'
 
+registerLocaleData(LocalePt, 'pt')
 import { ROUTES } from './app.routes';
 import { ApplicationErrorHandler } from './app.error-handler';
 
@@ -56,7 +59,7 @@ import { UserDatailComponent } from './header/user-datail/user-datail.component'
    // routing
   ],
   providers: [
-    ShoppingCartService,{provide: LOCALE_ID, useValue: 'pt-BR'},
+    ShoppingCartService,{provide: LOCALE_ID, useValue: 'pt'},
                         {provide: ErrorHandler, useClass: ApplicationErrorHandler}],
   bootstrap: [AppComponent]
 })
