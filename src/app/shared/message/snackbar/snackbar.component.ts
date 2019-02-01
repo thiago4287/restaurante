@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { NotificationService } from '../notification.service';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/timer';
-import 'rxjs/add/operator//do';
-import 'rxjs/add/operator/switchMap';
+import { Observable, timer } from 'rxjs';
+import { tap, switchMap} from 'rxjs/operators'
 
 @Component({
   selector: 'mt-snackbar',
@@ -33,12 +31,22 @@ export class SnackbarComponent implements OnInit {
 
   ngOnInit() {
     this.notificationService.notifier
+    .pipe(
+      tap(message=> {
+        this.mensagem = message
+        this.snackVisibility = 'visible'
+      }), 
+      switchMap(message => timer(3000))
+    ).subscribe(timer => this.snackVisibility = 'hidden')
+  }
+
+   /*  this.notificationService.notifier
     .do(message=> {
       this.mensagem = message
       this.snackVisibility = 'visible'
     }).switchMap(message => Observable.timer(3000))
     .subscribe(timer => this.snackVisibility = 'hidden')
-  }
+  } */
           
 }
 
@@ -59,4 +67,9 @@ O 'do' permite realizar uma ação no momento em que rcebe uma mensagem
 O 'switchMap' ao contrário do 'Map'(que recebe uma mensagem e a trasnforma em um outro formato),
 recebe uma mensagem e a partir daquela mensagem de notificação retorna um Observable contendo
 o timer 
+
+No angular 6 o operador 'do' foi renomeado para 'tap'
+A direfençã é que os operadores 'do'(tap) e 'switchMap' não fazer parte mais da gama de operadores
+estáticos do 'observable' mas sim da biblioteca do 'rxjs'
+Sendo que os mesmos agora deverão ser utilizados dentro de um 'pipe' que envolve todos os operadores
 */ 

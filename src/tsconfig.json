@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "watch": true,
+    "outDir": "dist",
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
@@ -9,7 +11,8 @@
       "es2016",
       "dom"
     ],
-    "outDir": "../out-tsc/app",
+  
+    //"outDir": "../out-tsc/app",
     "target": "es5",
     "module": "es2015",
     "baseUrl": "",
@@ -17,6 +20,10 @@
     "typeRoots": [
       "../node_modules/@types"
     ]
+  },
+  "compileOnSave": true,
+  "angularCompilerOptions": {
+     "preserveWhitespaces": false 
   },
   "exclude": [
     "test.ts",

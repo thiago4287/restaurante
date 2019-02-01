@@ -4,13 +4,8 @@ import { RestaurantService } from './restaurants.service';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { FormBuilder,  FormGroup, FormControl } from '@angular/forms';
 
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/from';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
+import { withLatestFrom, tap, switchMap, debounceTime, distinctUntilChanged, catchError } from 'rxjs/operators'
 
 
 @Component({
@@ -47,12 +42,13 @@ export class RestaurantsComponent implements OnInit {
       searchControl: this.searchControl
     })
     this.searchControl.valueChanges
-      .debounceTime(500)
-      .distinctUntilChanged()
-      .switchMap(TextoDigitado => 
-      this.restauranteService.restaurants(TextoDigitado)
-      .catch(error=> Observable.from([])))
-      .subscribe(restaurants => this.restaurants = restaurants)
+    .pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap(TextoDigitado => 
+        this.restauranteService.restaurants(TextoDigitado)
+        .pipe(catchError(error=> withLatestFrom([]))))
+    ).subscribe(restaurants => this.restaurants = restaurants)
 
     /*
     O swicthMap acima intercala 2 ou mais observalbes, logo substitui os códigos abaixo
