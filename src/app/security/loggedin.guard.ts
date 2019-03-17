@@ -4,7 +4,7 @@ import { Injectable } from "@angular/core";
 
 
 @Injectable()
-export class LoggedInGuard implements CanLoad, CanActivate {
+export class LoggedInGuard implements CanLoad, CanActivate{
 
     constructor(private loginService: LoginService) {}
 
